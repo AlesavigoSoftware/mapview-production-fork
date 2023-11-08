@@ -19,7 +19,7 @@ from kivy.properties import (
     ListProperty,
     NumericProperty,
     ObjectProperty,
-    StringProperty,
+    StringProperty, Logger,
 )
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.image import Image
@@ -27,16 +27,16 @@ from kivy.uix.label import Label
 from kivy.uix.scatter import Scatter
 from kivy.uix.widget import Widget
 
-from kivy_garden.mapview import Bbox, Coordinate
-from kivy_garden.mapview.constants import (
+from .types import Bbox, Coordinate
+from .constants import (
     CACHE_DIR,
     MAX_LATITUDE,
     MAX_LONGITUDE,
     MIN_LATITUDE,
     MIN_LONGITUDE,
 )
-from kivy_garden.mapview.source import MapSource
-from kivy_garden.mapview.utils import clamp
+from .source import MapSource
+from .utils import clamp
 
 Builder.load_string(
     """
@@ -49,9 +49,10 @@ Builder.load_string(
 <MapView>:
     canvas.before:
         StencilPush
-        Rectangle:
+        RoundedRectangle:
             pos: self.pos
             size: self.size
+            radius: [18, 0, 0, 0]
         StencilUse
         Color:
             rgba: self.background_color
@@ -348,7 +349,7 @@ class MapView(Widget):
     def scale(self):
         if self._invalid_scale:
             self._invalid_scale = False
-            self._scale = self._scatter.scale
+            self._scale = round(self._scatter.scale, 2)
         return self._scale
 
     def get_bbox(self, margin=0):
@@ -672,9 +673,9 @@ class MapView(Widget):
                 zoom, scale = self._touch_zoom
                 cur_zoom = self.zoom
                 cur_scale = self._scale
-                if cur_zoom < zoom or cur_scale < scale:
+                if cur_zoom < zoom or round(cur_scale, 2) < scale:
                     self.animated_diff_scale_at(1.0 - cur_scale, *touch.pos)
-                elif cur_zoom > zoom or cur_scale > scale:
+                elif cur_zoom > zoom or round(cur_scale, 2) > scale:
                     self.animated_diff_scale_at(2.0 - cur_scale, *touch.pos)
                 self._pause = False
             return True
@@ -701,7 +702,7 @@ class MapView(Widget):
             self.set_zoom_at(zoom, scatter.x, scatter.y, scale=scale)
             self.trigger_update(True)
         else:
-            if zoom == map_source.min_zoom and scatter.scale < 1.0:
+            if zoom == map_source.min_zoom and round(scatter.scale, 2) < 1.0:
                 scatter.scale = 1.0
                 self.trigger_update(True)
             else:

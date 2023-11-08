@@ -43,7 +43,7 @@ def get_zoom_for_radius(radius_km, lat=None, tile_size=256.0):
     # Check how many tiles that are currently in view
     nr_tiles_shown = min(Window.size) / dp(tile_size)
 
-    # Keep zooming in until we find a zoom level where the circle can fit inside the screen
+    # Keep zooming in until we find a zoom level where the circle can fit inside the change_map_callback
     zoom = 1
     while earth_circumference / (2 << (zoom - 1)) * nr_tiles_shown > 2 * radius:
         zoom += 1
