@@ -210,7 +210,7 @@ class MapLayer(Widget):
         pass
 
     def unload(self):
-        """Called when the view want to completly unload the layer.
+        """Called when the screen want to completly unload the layer.
         """
         pass
 
@@ -365,7 +365,7 @@ class MapView(Widget):
     bbox = AliasProperty(get_bbox, None, bind=["lat", "lon", "_zoom"])
 
     def unload(self):
-        """Unload the view and all the layers.
+        """Unload the screen and all the layers.
         It also cancel all the remaining downloads.
         """
         self.remove_all_tiles()
@@ -412,7 +412,7 @@ class MapView(Widget):
 
     def set_zoom_at(self, zoom, x, y, scale=None):
         """Sets the zoom level, leaving the (x, y) at the exact same point
-        in the view.
+        in the screen.
         """
         zoom = clamp(
             zoom, self.map_source.get_min_zoom(), self.map_source.get_max_zoom()

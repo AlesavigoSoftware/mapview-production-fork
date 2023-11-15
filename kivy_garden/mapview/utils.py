@@ -40,7 +40,7 @@ def get_zoom_for_radius(radius_km, lat=None, tile_size=256.0):
     # Calculate the equatorial circumference based on the WGS-84 radius
     earth_circumference = 2.0 * pi * 6378137.0 * cos(lat * pi / 180.0)
 
-    # Check how many tiles that are currently in view
+    # Check how many tiles that are currently in screen
     nr_tiles_shown = min(Window.size) / dp(tile_size)
 
     # Keep zooming in until we find a zoom level where the circle can fit inside the change_map_callback

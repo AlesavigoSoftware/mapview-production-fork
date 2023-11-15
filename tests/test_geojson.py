@@ -29,7 +29,7 @@ class TestGeoJsonMapLayer:
     def test_init_source(self):
         """
         Providing the source from http(s).
-        The json object should get downloaded using the requests library.
+        The _json object should get downloaded using the requests library.
         """
         source = "https://storage.googleapis.com/maps-devrel/google.json"
         kwargs = {"source": source}
