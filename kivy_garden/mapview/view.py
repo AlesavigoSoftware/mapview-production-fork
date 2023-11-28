@@ -673,10 +673,10 @@ class MapView(Widget):
                 zoom, scale = self._touch_zoom
                 cur_zoom = self.zoom
                 cur_scale = self._scale
-                if cur_zoom < zoom or round(cur_scale, 2) < scale:
-                    self.animated_diff_scale_at(1.0 - cur_scale, *touch.pos)
-                elif cur_zoom > zoom or round(cur_scale, 2) > scale:
-                    self.animated_diff_scale_at(2.0 - cur_scale, *touch.pos)
+                # if cur_zoom < zoom or round(cur_scale, 2) < scale:
+                #     self.animated_diff_scale_at(1.0 - cur_scale, *touch.pos)
+                # elif cur_zoom > zoom or round(cur_scale, 2) > scale:
+                #     self.animated_diff_scale_at(2.0 - cur_scale, *touch.pos)
                 self._pause = False
             return True
         return super().on_touch_up(touch)
