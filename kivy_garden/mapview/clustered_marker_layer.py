@@ -265,8 +265,8 @@ class Marker:
         self.widget = None
 
     def __repr__(self):
-        return "<Marker lon={} lat={} source={}>".format(
-            self.lon, self.lat, self.source
+        return "<Marker lon={} lat={}>".format(
+            self.lon, self.lat
         )
 
 
