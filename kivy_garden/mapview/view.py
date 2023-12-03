@@ -336,7 +336,7 @@ class MapView(Widget):
     _scale = 1.0
     _disabled_count = 0
 
-    __events__ = ["on_map_relocated"]
+    __events__ = ["on_map_relocated", "on_single_touch"]
 
     # Public API
 
@@ -554,6 +554,7 @@ class MapView(Widget):
         self._scale_target_anim = False
         self._scale_target = 1.0
         self._touch_count = 0
+        self._touch_moved = False
         self.map_source.cache_dir = self.cache_dir
         Clock.schedule_interval(self._animate_color, 1 / 60.0)
         self.lat = kwargs.get("lat", self.lat)
@@ -664,22 +665,39 @@ class MapView(Widget):
             self._touch_zoom = (self.zoom, self._scale)
         return super().on_touch_down(touch)
 
+    def on_single_touch(self, touch):
+        pass
+
+    def on_touch_move(self, touch):
+        self._touch_moved = True
+        return super().on_touch_move(touch)
+
     def on_touch_up(self, touch):
-        if touch.grab_current == self:
+        if touch.grab_current is self:
+
+            if self._touch_count == 1 and not self._touch_moved:
+                self.dispatch('on_single_touch', touch)
+
             touch.ungrab(self)
             self._touch_count -= 1
+
             if self._touch_count == 0:
-                # animate to the closest zoom
-                zoom, scale = self._touch_zoom
-                cur_zoom = self.zoom
-                cur_scale = self._scale
+                # Animate to the closest zoom. Deleted for now to fix view bugs
+                # zoom, scale = self._touch_zoom
+                # cur_zoom = self.zoom
+                # cur_scale = self._scale
                 # if cur_zoom < zoom or round(cur_scale, 2) < scale:
                 #     self.animated_diff_scale_at(1.0 - cur_scale, *touch.pos)
                 # elif cur_zoom > zoom or round(cur_scale, 2) > scale:
                 #     self.animated_diff_scale_at(2.0 - cur_scale, *touch.pos)
                 self._pause = False
+
+            self._touch_moved = False
             return True
-        return super().on_touch_up(touch)
+
+        else:
+
+            return super().on_touch_up(touch)
 
     def on_transform(self, *args):
         self._invalid_scale = True
