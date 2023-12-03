@@ -410,8 +410,8 @@ class ClusteredMarkerLayer(MapLayer):
     def remove_marker(self, marker):
         self.cluster_markers.remove(marker)
 
-    def reposition(self):
-        if self.cluster is None:
+    def reposition(self, rebuild_cluster=False):
+        if self.cluster is None or rebuild_cluster:
             self.build_cluster()
         margin = dp(48)
         mapview = self.parent
