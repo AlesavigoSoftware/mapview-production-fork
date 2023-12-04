@@ -19,7 +19,7 @@ from kivy.properties import (
     ListProperty,
     NumericProperty,
     ObjectProperty,
-    StringProperty, Logger,
+    StringProperty, Logger, ReferenceListProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.image import Image
@@ -144,6 +144,10 @@ class MapMarker(ButtonBehavior, Image):
 
     lon = NumericProperty(0)
     """Longitude of the marker
+    """
+
+    coordinates = ReferenceListProperty(lat, lon)
+    """Similar to the Widget.pos
     """
 
     source = StringProperty(join(dirname(__file__), "icons", "marker.png"))
