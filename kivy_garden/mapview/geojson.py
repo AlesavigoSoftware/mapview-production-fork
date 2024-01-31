@@ -199,7 +199,7 @@ def flatten(lst):
 class GeoJsonMapLayer(MapLayer):
 
     source = StringProperty()
-    geojson = ObjectProperty()
+    geojson = ObjectProperty(allownone=True)
     cache_dir = StringProperty(CACHE_DIR)
 
     def __init__(self, **kwargs):
