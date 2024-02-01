@@ -120,7 +120,10 @@ class Tile(Rectangle):
         return join(self.cache_dir, fn)
 
     def set_source(self, cache_fn):
-        self.source = cache_fn
+        try:
+            self.source = cache_fn
+        except Exception as ex:
+            Logger.warning(ex.args[0])
         self.state = "need-animation"
 
 
